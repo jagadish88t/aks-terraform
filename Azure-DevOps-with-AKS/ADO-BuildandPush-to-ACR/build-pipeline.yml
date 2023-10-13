@@ -1,18 +1,28 @@
 trigger:
 - main
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'acrserviceconnection'
+  imageRepository: 'app1/app1nginx'
+  containerRegistry: 'testacrwithaks.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Azure-DevOps-with-AKS/ADO-BuildandPush-to-ACR/Git-Repofiles/Dockerfile'
+  tag: '$(Build.BuildId)'
+  #Agent VM
+  vmImageName: 'ubuntu-latest'
 stages:
  - stage: Build
    displayName: Build Docker Image
    jobs:
     - job: Build
+      displayName: Build
+      pool:
+        vmImage: $(vmImageName)
       steps:
-       - task: PowerShell@2
-         inputs:
-          targetType: 'inline'
-          script: 'Get-ChildItem -Path $(Build.SourcesDirectory)'
        - task: Docker@2
          inputs:
-          containerRegistry: 'acrserviceconnection'
-          repository: 'testapplication'
-          command: 'build'
-          Dockerfile: '$(Build.SourcesDirectory)/Azure-DevOps-with-AKS/ADO-BuildandPush-to-ACR/Git-Repofiles/Dockerfile'
+          containerRegistry: '$(dockerRegistryServiceConnection)'
+          repository: '$(imageRepository)'
+          command: 'buildAndPush'
+          Dockerfile: '$(dockerfilePath)'
+          tags: |
+            $(tag)
