@@ -15,4 +15,4 @@ stages:
           containerRegistry: 'acrserviceconnection'
           repository: 'testapplication'
           command: 'build'
-          Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+          Dockerfile: '$(Build.SourcesDirectory)/Azure-DevOps-with-AKS/ADO-BuildandPush-to-ACR/Git-Repofiles/Dockerfile'
