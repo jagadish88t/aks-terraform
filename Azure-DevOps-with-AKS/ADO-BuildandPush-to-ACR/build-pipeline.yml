@@ -1,0 +1,14 @@
+trigger:
+- main
+stages:
+ - stage: Build
+   displayName: Build Docker Image
+   jobs:
+    - job: Build
+      steps:
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'acrserviceconnection'
+            repository: 'testapplication'
+            command: 'build'
+            Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
