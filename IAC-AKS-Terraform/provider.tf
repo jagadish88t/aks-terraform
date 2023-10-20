@@ -1,5 +1,5 @@
 module "version_module" {
-  source = "../provider"
+  source = "./provider"
 }
 provider "azurerm" {
   features {}
