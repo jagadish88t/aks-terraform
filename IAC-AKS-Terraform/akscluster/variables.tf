@@ -1,34 +1,20 @@
-# Variables for Resources
-# All resources are created in one Resource Group only
-
-# Constant variables for all resources accross this project
-variable "resource_group_name" {
-  type        = string
-  description = "Resource group name for AKS"
-}
+# Azure AKS Location
 variable "resource_group_location" {
-  type        = string
-  description = "Resource group location for AKS"
-  validation {
-    condition = contains(["eastus", "westus"], lower(var.resource_group_location))
-    error_message = "Unsupported Azure Region specified. Supported regions include: eastus, westus."
-  }
+  type = string
+  description = "AKS resource location"
 }
-variable "resource_group_tags" {
-  type = map(string)
+
+# Azure AKS Resource Group Name
+variable "resource_group_name" {
+  type = string
+  description = "AKS resource group name where the resource need to be created."
 }
-# variable "resource_group_tags" {
-#   type = object({
-#     owner = string
-#   })
-# }
+
+# Azure AKS Environment Name
 variable "environment" {
   type = string
-  description = "Environment where the resources are going to be created"
+  description = "AKS environment"
 }
-
-
-# AKS Input Variables
 
 # AKS Cluster input variables
 
@@ -37,6 +23,7 @@ variable "aks_cluster_name" {
   type = string
   description = "AKS cluster name."
 }
+# AKS Input Variables
 
 # SSH Public Key for Linux VMs
 variable "ssh_public_key" {
@@ -47,12 +34,14 @@ variable "ssh_public_key" {
 # Windows Admin Username for k8s worker nodes
 variable "windows_admin_username" {
   type = string
+  default = "azureuser"
   description = "This variable defines the Windows admin username k8s Worker nodes"
 }
 
 # Windows Admin Password for k8s worker nodes
 variable "windows_admin_password" {
   type = string
+  default = "StackSimplify@102"  # Updated June 2023
   description = "This variable defines the Windows admin password k8s Worker nodes"  
 }
 
@@ -69,4 +58,9 @@ variable "log_analytics_workspace_name" {
 variable "log_analytics_workspace_sku" {
   type = string
   description = "SKU for log analytics workspace."
+}
+
+
+variable "resource_group_tags" {
+  type = map(string)
 }
