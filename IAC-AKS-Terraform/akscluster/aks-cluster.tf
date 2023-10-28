@@ -11,6 +11,25 @@ resource "azurerm_log_analytics_workspace" "aks_insights" {
   retention_in_days = 30
 }
 
+/*
+  Create log analytics solution.
+  If this resource is not added in terraform it will be created automatically and needs to be imported in tfstate later.
+  https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_solution#product
+  https://github.com/hashicorp/terraform-provider-azurerm/blob/main/website/docs/r/log_analytics_solution.html.markdown
+*/
+resource "azurerm_log_analytics_solution" "aks_insights_solution" {
+  solution_name = "ContainerInsights"
+  location = var.resource_group_location
+  resource_group_name = var.resource_group_name
+  workspace_resource_id = azurerm_log_analytics_workspace.aks_insights.id
+  workspace_name = azurerm_log_analytics_workspace.aks_insights.name
+
+  plan {
+    publisher = "Microsoft"
+    product = "OMSGallery/ContainerInsights"
+  }
+}
+
 # Create Azure AD Group for AKS Admins
 resource "azuread_group" "aks_admins" {
   display_name = "${var.resource_group_name}-cluster-admins"
